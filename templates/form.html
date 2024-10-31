@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="uk">
 	<head>
 		<meta charset="UTF-8" />
-		<title>Заполнение формы</title>
+		<title>Перевірка посвідчення водія</title>
 	</head>
 	<body>
-		<h1>Заполните форму</h1>
+		<h1>Перевірка посвідчення водія</h1>
 		<form action="{{ url_for('submit_form') }}" method="post">
-			<label for="series">Серия:</label>
+			<label for="series">Серія:</label>
 			<input type="text" id="series" name="series" required /><br /><br />
 
 			<label for="number">Номер:</label>
 			<input type="text" id="number" name="number" required /><br /><br />
 
-			<label for="birthday">Дата рождения:</label>
+			<label for="birthday">Дата народження:</label>
 			<input
 				type="text"
 				id="birthday"
@@ -22,12 +22,12 @@
 				required
 			/><br /><br />
 
-			<button type="submit">Отправить</button>
+			<button type="submit">Перевірити</button>
 		</form>
 
 		{% if result %}
-		<h2>Результат:</h2>
-		<p>{{ result }}</p>
+		<h2>Результат перевірки:</h2>
+		<pre>{{ result }}</pre>
 		{% endif %}
 	</body>
 </html>
