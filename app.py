@@ -8,7 +8,7 @@ from selenium.webdriver.support import expected_conditions as EC
 app = Flask(__name__)
 
 
-CHROMEDRIVER_PATH = r"C:\Users\New\Desktop\app-python-web/chromedriver.exe"
+CHROMEDRIVER_PATH = r"app-python-web/chromedriver.exe"
 
 
 @app.route("/")
