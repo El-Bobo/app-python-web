@@ -29,37 +29,50 @@ def submit_form():
             verify=False,  # Отключение проверки сертификата
         )
 
-        # Проверка на успешный ответ
         if response.status_code == 200:
             soup = BeautifulSoup(response.content, "html.parser")
 
-            # Парсинг HTML-ответа
+            # Проверяем, есть ли нужная информация на странице
             result_container = soup.find("div", class_="container-fluid")
             if result_container:
-                name = result_container.find("a", {"data-i18n": "_info"}).text.strip()
-                result_text += f"Документ на ім'я: {name}\n\n"
+                name = result_container.find("a", {"data-i18n": "_info"})
+                if name:
+                    # Парсим информацию
+                    name_text = name.text.strip()
+                    result_text += f"Документ на ім'я: {name_text}\n\n"
 
-                # Парсинг информации с номерами строк
-                rows = result_container.find_all("tr")
-                for row in rows:
-                    cols = row.find_all("th")
-                    if len(cols) == 3:
-                        row_num = cols[0].text.strip()
-                        label = cols[1].text.strip()
-                        value = cols[2].text.strip()
-                        result_text += f"{row_num}    {label}    {value}\n"
-                    elif len(cols) == 4 and "Категорія" in cols[2].text:
-                        row_num = cols[0].text.strip()
-                        category = cols[2].text.strip()
-                        date = cols[3].text.strip()
-                        result_text += f"{row_num}    {category}:    {date}\n"
+                    rows = result_container.find_all("tr")
+                    for row in rows:
+                        cols = row.find_all("th")
+                        if len(cols) == 3:
+                            row_num = cols[0].text.strip()
+                            label = cols[1].text.strip()
+                            value = cols[2].text.strip()
+                            result_text += f"{row_num}    {label}    {value}\n"
+                        elif len(cols) == 4 and "Категорія" in cols[2].text:
+                            row_num = cols[0].text.strip()
+                            category = cols[2].text.strip()
+                            date = cols[3].text.strip()
+                            result_text += f"{row_num}    {category}:    {date}\n"
 
-                # Парсинг ограничений
-                restrictions_row = result_container.find("th", string="Обмеження:")
-                if restrictions_row:
-                    restrictions = restrictions_row.find_next_sibling("th").text.strip()
-                    result_text += f"\n{restrictions}\n"
-                    print(result_text)
+                    restrictions_row = result_container.find("th", string="Обмеження:")
+                    if restrictions_row:
+                        restrictions = restrictions_row.find_next_sibling(
+                            "th"
+                        ).text.strip()
+                        result_text += f"\n{restrictions}\n"
+                else:
+                    # Если информация не найдена, выводим сообщение, как на примере
+                    result_text = (
+                        "ІНФОРМАЦІЮ НЕ ЗНАЙДЕНО\n\n"
+                        "Якщо інформацію про видане посвідчення водія не знайдено, то власнику "
+                        "посвідчення водія слід звернутися для верифікації даних до регіонального "
+                        "сервісного центру залежно від регіону України, де було видане посвідчення водія.\n\n"
+                        "Перелік контактів регіональних підрозділів"
+                    )
+            else:
+                result_text = "ІНФОРМАЦІЮ НЕ ЗНАЙДЕНО\n\n"
+
         else:
             result_text = "Не удалось получить данные с сайта."
 
