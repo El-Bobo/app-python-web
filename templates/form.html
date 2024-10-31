@@ -3,6 +3,12 @@
 	<head>
 		<meta charset="UTF-8" />
 		<title>Перевірка посвідчення водія</title>
+		<script>
+			// Очистка поля результата при загрузке страницы
+			window.onload = function () {
+				document.getElementById('result').innerHTML = ''
+			}
+		</script>
 	</head>
 	<body>
 		<h1>Перевірка посвідчення водія</h1>
@@ -27,7 +33,10 @@
 
 		{% if result %}
 		<h2>Результат перевірки:</h2>
-		<pre>{{ result }}</pre>
+		<pre id="result">{{ result }}</pre>
+		{% else %}
+		<pre id="result"></pre>
+		<!-- Поле для результата, которое будет очищаться при загрузке -->
 		{% endif %}
 	</body>
 </html>
