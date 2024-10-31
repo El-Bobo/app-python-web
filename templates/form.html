@@ -4,9 +4,16 @@
 		<meta charset="UTF-8" />
 		<title>Перевірка посвідчення водія</title>
 		<script>
-			// Очистка поля результата при загрузке страницы
+			// Очистка результата только при первом открытии страницы
 			window.onload = function () {
-				document.getElementById('result').innerHTML = ''
+				// Проверка в sessionStorage, был ли это первый визит
+				if (!sessionStorage.getItem('visited')) {
+					// Очищаем результат и скрываем заголовок только при первом посещении
+					document.getElementById('result').innerHTML = ''
+					document.getElementById('result-header').style.display = 'none'
+					// Устанавливаем флаг, что страница была посещена
+					sessionStorage.setItem('visited', 'true')
+				}
 			}
 		</script>
 	</head>
@@ -32,11 +39,11 @@
 		</form>
 
 		{% if result %}
-		<h2>Результат перевірки:</h2>
+		<h2 id="result-header">Результат перевірки:</h2>
 		<pre id="result">{{ result }}</pre>
 		{% else %}
+		<h2 id="result-header" style="display: none">Результат перевірки:</h2>
 		<pre id="result"></pre>
-		<!-- Поле для результата, которое будет очищаться при загрузке -->
 		{% endif %}
 	</body>
 </html>
