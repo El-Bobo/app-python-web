@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Заполнение формы</title>
+	</head>
+	<body>
+		<h1>Заполните форму</h1>
+		<form action="{{ url_for('submit_form') }}" method="post">
+			<label for="series">Серия:</label>
+			<input type="text" id="series" name="series" required /><br /><br />
+
+			<label for="number">Номер:</label>
+			<input type="text" id="number" name="number" required /><br /><br />
+
+			<label for="birthday">Дата рождения:</label>
+			<input
+				type="text"
+				id="birthday"
+				name="birthday"
+				placeholder="YYYY-MM-DD"
+				required
+			/><br /><br />
+
+			<button type="submit">Отправить</button>
+		</form>
+
+		{% if result %}
+		<h2>Результат:</h2>
+		<p>{{ result }}</p>
+		{% endif %}
+	</body>
+</html>
